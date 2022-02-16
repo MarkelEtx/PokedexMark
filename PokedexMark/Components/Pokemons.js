@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         backgroundColor: "black"
     },
     card: {
-        display: 'flex',
+        // display: 'flex',
         alignItems: 'center',
         borderBottomWidth: 1,
         marginHorizontal: 20,
@@ -91,9 +91,8 @@ const styles = StyleSheet.create({
 
     },
     searchCont: {
-
-        paddingLeft: '20%',
-        paddingTop: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
         flex: 0.3,
         backgroundColor: "red",
         zIndex: 1,

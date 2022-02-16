@@ -1,5 +1,18 @@
 {
     "details": {
-        "Ability": "Ability"
+        "Ability": "Ability",
+        "Type": "Type",
+        "Height": "Height",
+        "Weight": "Weight"
+    },
+    "information": {
+        "Information": "Information"
+    },
+    "generation": {
+        "Generation": "Generation"
+    },
+    "languages": {
+        "Spanish": "Spanish",
+        "English": "English"
     }
 }

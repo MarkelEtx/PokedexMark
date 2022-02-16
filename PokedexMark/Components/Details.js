@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator, Button, ScrollView, ProgressBarAndroid } from 'react-native';
 import { I18nextProvider } from "react-i18next";
 import i18next from 'i18next';
+import I18n, { getLanguages } from 'react-native-i18n';
 // import global_es from "../Translations/es/global.json";
 // import global_en from "../Translations/en/global.json";
 // import {useTanslation} from "react-i18next";
@@ -20,6 +21,15 @@ import i18next from 'i18next';
 //         },
 //     },
 // })
+
+I18n.fallbacks = true;
+
+// Available languages
+I18n.translations = {
+    'en': require('../Translations/en/global'),
+    'es': require('../Translations/es/global'),
+
+};
 const Details = props => {
     const [details, setDetails] = useState([]);
     const [imagesgen] = useState([
@@ -67,7 +77,7 @@ const Details = props => {
         return (imagesgen).map((imagen, n) => {
             return (
                 <View style={styles.spriteimg}>
-                    <Text>{n + 1}.Generación</Text>
+                    <Text>{n + 1}.{I18n.t('generation.Generation')}</Text>
                     <Image
                         style={{ width: 100, height: 100, }}
                         source={{
@@ -97,14 +107,14 @@ const Details = props => {
                     />
                     <View style={styles.apartado} >
                         <Button style={{ width: 12 }}
-                            onPress={() => alert('This is a button!')}
-                            title="español"
+                            onPress={() => alert('Esto deberia cambiar idioma a español')}
+                            title={I18n.t('languages.Spanish')}
                             color="red"
                             accessibilityLabel="Learn more about this purple button"
                         />
-                        <Button style={{ width: 12 }}
-                            onPress={() => alert(images[0] + details.name + ".png")}
-                            title="Ingles"
+                        <Button style={{ width: 12, }}
+                            onPress={() => alert('Esto deberia cambiar idioma a inglés')}
+                            title={I18n.t('languages.English')}
                             color="red"
                             accessibilityLabel="Learn more about this purple button"
                         />
@@ -112,14 +122,14 @@ const Details = props => {
                 </View>
                 <View style={styles.infoView} >
                     <View style={styles.infoBack}>
-                        <Text style={styles.infotext}>INFO</Text>
+                        <Text style={styles.infotext}>{I18n.t('information.Information')}</Text>
                     </View>
                     <View style={styles.apartadoInfo}>
-                        <View style={styles.mediaColInfo}>
-                            <Text >pepea: {details.abilities[0].ability.name}</Text>
-                            <Text >Type: {details.types[0].type.name}{(details.types.length > 1) ? "/" + details.types[1].type.name : null}</Text>
-                            <Text >Height: {details.height}</Text>
-                            <Text >Weight: {details.weight}</Text>
+                        <View style={styles.mediaColInfo1}>
+                            <Text style={styles.abilities}>{I18n.t('details.Ability')}: {details.abilities[0].ability.name}</Text>
+                            <Text style={styles.abilities}>{I18n.t('details.Type')}: {details.types[0].type.name}{(details.types.length > 1) ? "/" + details.types[1].type.name : null}</Text>
+                            <Text style={styles.abilities}>{I18n.t('details.Height')}: {details.height}</Text>
+                            <Text style={styles.abilities}>{I18n.t('details.Weight')}: {details.weight}</Text>
                         </View>
                         <View style={styles.mediaColInfo}>
                             {estadisticas()}
@@ -141,11 +151,7 @@ const Details = props => {
             </ScrollView>
         </View>
     ) : (
-        <View style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}>
+        <View style={styles.cargando}>
             <ActivityIndicator size="large" color="green" />
         </View>
     );
@@ -158,6 +164,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "black"
 
+    },
+    cargando: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     apartado: {
         flex: 1,
@@ -180,7 +191,8 @@ const styles = StyleSheet.create({
         padding: 10
     },
     textName: {
-        paddingTop: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
         fontSize: 50,
         textAlign: "center",
         fontWeight: "bold",
@@ -196,12 +208,16 @@ const styles = StyleSheet.create({
     },
     apartadoInfo: {
         flexDirection: "row",
-        flex: 2,
         backgroundColor: "gray",
         borderRadius: 10,
         margin: 10,
         marginTop: 0
     },
+    abilities: {
+        fontSize: 15,
+        margin: 10,
+    },
+
     red: {
         color: "red",
         fontWeight: "bold"
@@ -212,7 +228,6 @@ const styles = StyleSheet.create({
     },
     infoView: {
         flexDirection: "column",
-        flex: 2,
         backgroundColor: "gray",
         borderRadius: 10,
         margin: 10,
@@ -225,17 +240,25 @@ const styles = StyleSheet.create({
     },
     infoBack: {
         flexDirection: "column",
-        flex: 0.5,
         textAlign: "center",
         backgroundColor: "dimgray",
         borderTopEndRadius: 10,
         borderTopLeftRadius: 10
     },
     mediaColInfo: {
-        flex: 1
+        backgroundColor: "dimgray",
+        margin: 4,
+        flex: 1,
+        borderRadius: 5,
+        padding: 5
+    },
+    mediaColInfo1: {
+        backgroundColor: "dimgray",
+        margin: 4,
+        flex: 1,
+        borderRadius: 5
     },
     apartdoSprites: {
-        flex: 3,
         backgroundColor: "gray",
         borderRadius: 10,
         margintop: 10,
@@ -250,7 +273,6 @@ const styles = StyleSheet.create({
     },
     generaciones: {
         flexDirection: "row",
-        flex: 2
     }
 
 

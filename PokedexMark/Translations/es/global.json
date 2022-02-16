@@ -1,7 +1,18 @@
 {
-    "details":{
-        "Ability":"Habilidad"
+    "details": {
+        "Ability": "habilidad",
+        "Type": "Tipo",
+        "Height": "Altura",
+        "Weight": "Peso"
+    },
+    "information": {
+        "Information": "Información"
+    },
+    "generation": {
+        "Generation": "Generación"
+    },
+    "languages": {
+        "Spanish": "Español",
+        "English": "Inglés"
     }
-
-    
 }
