@@ -1,15 +1,40 @@
 //Details.js
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, ActivityIndicator, Button, } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator, Button, ScrollView, ProgressBarAndroid } from 'react-native';
+import { I18nextProvider } from "react-i18next";
+import i18next from 'i18next';
+// import global_es from "../Translations/es/global.json";
+// import global_en from "../Translations/en/global.json";
+// import {useTanslation} from "react-i18next";
 // import { styles } from './styles';
 
-
+// i18next.init({
+//     interpolation: {escapeValue:false},
+//     lng: "es",
+//     resources:{
+//         es:{
+//             global: global_es
+//         },
+//         en:{
+//             global: global_en
+//         },
+//     },
+// })
 const Details = props => {
     const [details, setDetails] = useState([]);
+    const [imagesgen] = useState([
+        `https://img.pokemondb.net/sprites/red-blue/normal/`,
+        `https://img.pokemondb.net/sprites/silver/normal/`,
+        `https://img.pokemondb.net/sprites/ruby-sapphire/normal/`,
+        `https://img.pokemondb.net/sprites/diamond-pearl/normal/`,
+        `https://img.pokemondb.net/sprites/black-white/normal/`,
+        `https://img.pokemondb.net/sprites/x-y/normal/`,
+        `https://img.pokemondb.net/sprites/sun-moon/normal/`,
+        `https://img.pokemondb.net/sprites/sword-shield/normal/`
+    ]);
 
     useEffect(() => {
         fetchPokemonDetails();
-
     }, []);
 
     const fetchPokemonDetails = () => {
@@ -18,67 +43,102 @@ const Details = props => {
             .then(res => res.json())
             .then(details => {
                 setDetails(details)
-                console.log(details)
-                
             });
 
     };
-    const images = [
-        `https://img.pokemondb.net/sprites/silver/normal/${details.name}.png`,
-        `https://img.pokemondb.net/sprites/ruby-sapphire/normal/${details.name}.png`,
+    function estadisticas() {
+        return (details.stats).map((stat) => {
+            return (
 
-    ]
-    
-    console.log(images)
-    return details.name ? (
-        <View style={[styles.container]}>
-            <View style={[styles.apartado]}>
-                <Text style={styles.textName}>{details.id}-{details.name}</Text>
+                <Text style={styles.textStats}>{stat.stat.name}:
+                    <Text style={(stat.base_stat >= 70) ? styles.green : styles.red}>{stat.base_stat}</Text>{"\n"}
+                    <ProgressBarAndroid style={{ width: 100 }}
+                        styleAttr="Horizontal"
+                        indeterminate={false}
+                        progress={stat.base_stat / 100}
+                        color={(stat.base_stat >= 70) ? "green" : "red"}
+                    />
+                </Text>
 
-            </View>
-            <View style={{ flexDirection: "row", flex: 2, }} >
-
-                <Image
-                    style={styles.apartadoimg}
-                    source={{
-                        uri: `https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${details.name}.png`,
-                    }}
-                />
-                <View style={styles.apartado} >
-                    <Button style={{ width: 12 }}
-                        onPress={() => alert('This is a button!')}
-                        title="Learn More"
-                        color="red"
-                        accessibilityLabel="Learn more about this purple button"
+            )
+        })
+    }
+    function generaciones() {
+        return (imagesgen).map((imagen, n) => {
+            return (
+                <View style={styles.spriteimg}>
+                    <Text>{n + 1}.Generación</Text>
+                    <Image
+                        style={{ width: 100, height: 100, }}
+                        source={{
+                            uri: imagen + details.name + ".png",
+                        }}
                     />
                 </View>
-            </View>
-            <View style={styles.infoView} >
-                <View style={styles.infoBack}>
-                    <Text style={styles.infotext}>INFO</Text>
+            )
+        })
+    }
+
+    //const[t,i18n] = useTanslation("global");
+
+    return details.name ? (
+        <View style={[styles.container]}>
+            <ScrollView>
+                <View style={[styles.apartado]}>
+                    <Text style={styles.textName}>{details.id}-{details.name}</Text>
                 </View>
-                <View style={styles.apartadoInfo}>
-                    <View style={styles.mediaColInfo}>
-                        <Text >Ability: {details.abilities[0].ability.name}</Text>
-                        <Text >Type: {details.types[0].type.name}{(details.types.length > 1) ? "/" + details.types[1].type.name : null}</Text>
-                        <Text >Height: {details.height}</Text>
-                        <Text >Weight: {details.weight}</Text>
+                <View style={{ flexDirection: "row", flex: 3, }} >
+
+                    <Image
+                        style={styles.apartadoimg}
+                        source={{
+                            uri: `https://img.pokemondb.net/sprites/omega-ruby-alpha-sapphire/dex/normal/${details.name}.png`,
+                        }}
+                    />
+                    <View style={styles.apartado} >
+                        <Button style={{ width: 12 }}
+                            onPress={() => alert('This is a button!')}
+                            title="español"
+                            color="red"
+                            accessibilityLabel="Learn more about this purple button"
+                        />
+                        <Button style={{ width: 12 }}
+                            onPress={() => alert(images[0] + details.name + ".png")}
+                            title="Ingles"
+                            color="red"
+                            accessibilityLabel="Learn more about this purple button"
+                        />
                     </View>
-                    <View style={styles.mediaColInfo}>
-                        <Text style={styles.textStats}>{details.stats[0].stat.name}: <Text style={(details.stats[0].base_stat >= 70) ? styles.green : styles.red}>{details.stats[0].base_stat}</Text></Text>
-                        <Text style={styles.textStats}>{details.stats[1].stat.name}: <Text style={(details.stats[1].base_stat >= 70) ? styles.green : styles.red}>{details.stats[1].base_stat}</Text></Text>
-                        <Text style={styles.textStats}>{details.stats[2].stat.name}: <Text style={(details.stats[2].base_stat >= 70) ? styles.green : styles.red}>{details.stats[2].base_stat}</Text></Text>
-                        <Text style={styles.textStats}>{details.stats[3].stat.name}: <Text style={(details.stats[3].base_stat >= 70) ? styles.green : styles.red}>{details.stats[3].base_stat}</Text></Text>
-                        <Text style={styles.textStats}>{details.stats[4].stat.name}: <Text style={(details.stats[4].base_stat >= 70) ? styles.green : styles.red}>{details.stats[4].base_stat}</Text></Text>
-                        <Text style={styles.textStats}>{details.stats[5].stat.name}: <Text style={(details.stats[5].base_stat >= 70) ? styles.green : styles.red}>{details.stats[5].base_stat}</Text></Text>
+                </View>
+                <View style={styles.infoView} >
+                    <View style={styles.infoBack}>
+                        <Text style={styles.infotext}>INFO</Text>
+                    </View>
+                    <View style={styles.apartadoInfo}>
+                        <View style={styles.mediaColInfo}>
+                            <Text >pepea: {details.abilities[0].ability.name}</Text>
+                            <Text >Type: {details.types[0].type.name}{(details.types.length > 1) ? "/" + details.types[1].type.name : null}</Text>
+                            <Text >Height: {details.height}</Text>
+                            <Text >Weight: {details.weight}</Text>
+                        </View>
+                        <View style={styles.mediaColInfo}>
+                            {estadisticas()}
+                        </View>
                     </View>
                 </View>
-            </View>
-            <View style={styles.apartdoSprites} >
-                <View style={styles.infoBack}>
-                    <Text style={styles.infotext}>SPRITES</Text>
+                <View style={styles.apartdoSprites} >
+                    <View style={styles.infoBack}>
+                        <Text style={styles.infotext}>SPRITES</Text>
+
+                    </View>
+                    <ScrollView
+                        horizontal={true}>
+                        <View style={styles.generaciones} >
+                            {generaciones()}
+                        </View>
+                    </ScrollView>
                 </View>
-            </View>
+            </ScrollView>
         </View>
     ) : (
         <View style={{
@@ -86,7 +146,7 @@ const Details = props => {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <ActivityIndicator size="large" color="blue" />
+            <ActivityIndicator size="large" color="green" />
         </View>
     );
 };
@@ -112,7 +172,8 @@ const styles = StyleSheet.create({
         backgroundColor: "gray",
         borderRadius: 12,
         padding: 10,
-       
+        height: 150
+
 
     },
     apartado2: {
@@ -174,12 +235,23 @@ const styles = StyleSheet.create({
         flex: 1
     },
     apartdoSprites: {
-        flex: 2,
+        flex: 3,
         backgroundColor: "gray",
         borderRadius: 10,
         margintop: 10,
         marginHorizontal: 10,
         marginBottom: 10
+    },
+    spriteimg: {
+        backgroundColor: "dimgray",
+        padding: 10,
+        margin: 10,
+        borderRadius: 10
+    },
+    generaciones: {
+        flexDirection: "row",
+        flex: 2
     }
+
 
 });

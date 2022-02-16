@@ -18,24 +18,23 @@ const Pokemons = props => {
     }, []);
 
     const fetchPokemons = () => {
-        fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
+        fetch('https://pokeapi.co/api/v2/pokemon?limit=251')
             .then(response => response.json())
             .then(pokemons => setPokemons(pokemons.results));
     };
-    console.log(pokemons);
     return (
         <View style={[styles.container, {
             flexDirection: "column"
-          }]}>
+        }]}>
             <View style={styles.searchCont} >
                 <TextInput
-                        style={styles.searchfeild}
-                        placeholder="Search Pokemons"
-                        value={searchfeild}
-                        onChangeText={value => setSearchfeild(value)}
-                    />
+                    style={styles.searchfeild}
+                    placeholder="Search Pokemons"
+                    value={searchfeild}
+                    onChangeText={value => setSearchfeild(value)}
+                />
             </View>
-            <View style={{ flex:2, backgroundColor: "black" }} >
+            <View style={{ flex: 2, backgroundColor: "black" }} >
                 <ScrollView>
                     <View style={styles.container}>
                         {pokemons
@@ -54,32 +53,32 @@ const Pokemons = props => {
                                             })
                                         }>
                                         <Image
-                                            style={{ width: 160, height: 150 }}
+                                            style={{ width: 150, height: 150 }}
                                             source={{
                                                 uri: `https://img.pokemondb.net/sprites/diamond-pearl/normal/${pokemon.name}.png`,
                                             }}
                                         />
-                                        <Text style={{fontSize:20, fontWeight:"bold", marginBottom:10}}>{pokemon.name}</Text>
+                                        <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>{pokemon.name}</Text>
                                     </TouchableOpacity>
                                 );
                             })}
                     </View>
                 </ScrollView>
             </View>
-            
-          </View>
+
+        </View>
     );
 };
 
 export default Pokemons;
 
 const styles = StyleSheet.create({
-        container: {
+    container: {
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        backgroundColor:"black"
+        backgroundColor: "black"
     },
     card: {
         display: 'flex',
@@ -87,16 +86,16 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         marginHorizontal: 20,
         marginVertical: 10,
-        backgroundColor:"gray",
-        borderRadius:20
-        
+        backgroundColor: "gray",
+        borderRadius: 20
+
     },
     searchCont: {
-       
+
         paddingLeft: '20%',
-        paddingTop:20,
+        paddingTop: 20,
         flex: 0.3,
-        backgroundColor: "red" ,
+        backgroundColor: "red",
         zIndex: 1,
 
     },
@@ -109,6 +108,6 @@ const styles = StyleSheet.create({
         width: 250,
         borderRadius: 10,
         backgroundColor: "white",
-        zIndex:1
+        zIndex: 1
     },
 });
